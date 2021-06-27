@@ -6,6 +6,18 @@ from sql_queries import *
 
 
 def process_song_file(cur, filepath):
+    """
+    Description: This function is responsible for listing the files in path "data/song_data",
+    and then executing the ingest process for each file according to the function
+    that performs the transformation to save it to the database.
+
+    Arguments:
+        cur: the cursor object.
+        filepath: song data file path.
+
+    Returns:
+        None
+    """
     # open song file
     df_song = pd.read_json(filepath,lines=True)
 
@@ -19,6 +31,18 @@ def process_song_file(cur, filepath):
 
 
 def process_log_file(cur, filepath):
+    """
+    Description: This function is responsible for listing the files in path "data/log_data",
+    and then executing the ingest process for each file according to the function
+    that performs the transformation to save it to the database.
+
+    Arguments:
+        cur: the cursor object.
+        filepath: log data file path.
+
+    Returns:
+        None
+    """
     # open log file
     df_log = pd.read_json(filepath,lines=True)
 
@@ -61,6 +85,20 @@ def process_log_file(cur, filepath):
 
 
 def process_data(cur, conn, filepath, func):
+    """
+    Description: This function is responsible for listing the files in a directory,
+    and then executing the ingest process for each file according to the function
+    that performs the transformation to save it to the database.
+
+    Arguments:
+        cur: the cursor object.
+        conn: connection to the database.
+        filepath: log data or song data file path.
+        func: function that transforms the data and inserts it into the database.
+
+    Returns:
+        None
+    """
     # get all files matching extension from directory
     all_files = []
     for root, dirs, files in os.walk(filepath):
@@ -80,6 +118,12 @@ def process_data(cur, conn, filepath, func):
 
 
 def main():
+    """
+    Establishes connection with the sparkify database and gets
+    cursor to it.
+    
+    Run the process_data function with different filepath and function name.
+    """
     conn = psycopg2.connect("host=127.0.0.1 dbname=sparkifydb user=student password=student")
     cur = conn.cursor()
 
